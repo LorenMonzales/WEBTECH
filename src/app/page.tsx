@@ -60,7 +60,15 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
-              {/* Optional: pwede mo pa dagdagan ng ibang charts dito */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Total Users</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold">{users.length}</p>
+                  <p className="text-gray-600">Registered users</p>
+                </CardContent>
+              </Card>
             </div>
           )}
         </div>
