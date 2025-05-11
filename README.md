@@ -1,6 +1,3 @@
-Webtech Final Project
-
-Project Description
 This project is a web application developed using Next.js and Tailwind CSS. It fetches data from the JSON Placeholder API to display user information, posts, and comments. The application also includes data visualization using ApexCharts.
 
 Feature Highlights:
@@ -42,17 +39,18 @@ Loren Monzales
 -Testing and Quality Assurance
 -Collaboration and Version Control
 
-Aiko Balbalosa
+John Ronald Barabicho
+-User Interface (UI) Development
+
+Marry Ann Araojo
 -Collaboration and Version Control
--Presentation
 
-Irish Nicole Diesta
--Data Visualization
--Presentation
-
-John Rvie Samson
+Johnrey Chris Belen
 -Testing and Quality Assurance
--Deployment and Documentation
+
+Stephanie Grafia
+-Presentation
+
 
 Deployed URL
-(https://webtech-final-nextjs.vercel.app/)
+(https://nextjs-final-proj.vercel.app/)
