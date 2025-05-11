@@ -55,4 +55,4 @@ John Rvie Samson
 -Deployment and Documentation
 
 Deployed URL
-[(https://your-vercel-link.vercel.app)](https://webtech-final-nextjs.vercel.app/)
+(https://webtech-final-nextjs.vercel.app/)
