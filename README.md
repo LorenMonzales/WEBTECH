@@ -31,7 +31,7 @@ Setup and Installation:
    
 Team Member Contributions:
 
-Loren Monzales
+Christian Bohol
 -Project Setup and Configuration
 -Data Fetching and Management
 -User Interface (UI) Development
