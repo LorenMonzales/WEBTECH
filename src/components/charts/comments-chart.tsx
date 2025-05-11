@@ -6,7 +6,13 @@ import { ApexOptions } from "apexcharts";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-export default function CommentsChart({ posts, comments }: { posts: Post[]; comments: Comment[] }) {
+export default function CommentsChart({
+  posts,
+  comments,
+}: {
+  posts: Post[];
+  comments: Comment[];
+}) {
   const commentCounts = comments.reduce<Record<number, number>>((acc, comment) => {
     acc[comment.postId] = (acc[comment.postId] || 0) + 1;
     return acc;
@@ -35,15 +41,21 @@ export default function CommentsChart({ posts, comments }: { posts: Post[]; comm
       background: "transparent",
       animations: {
         enabled: true,
-        easing: "easeinout",
-        speed: 500,
+        animateGradually: {
+          enabled: true,
+          delay: 150,
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 500,
+        },
       },
     },
     plotOptions: {
       bar: {
         horizontal: true,
         borderRadius: 0,
-        barHeight: "60%", // Slightly taller bars
+        barHeight: "60%",
         distributed: true,
       },
     },
@@ -52,7 +64,7 @@ export default function CommentsChart({ posts, comments }: { posts: Post[]; comm
       labels: {
         style: {
           colors: "#94a3b8",
-          fontSize: "14px", // Larger font
+          fontSize: "14px",
           fontWeight: 500,
         },
       },
@@ -61,7 +73,7 @@ export default function CommentsChart({ posts, comments }: { posts: Post[]; comm
       labels: {
         style: {
           colors: "#94a3b8",
-          fontSize: "14px", // Larger font
+          fontSize: "14px",
           fontWeight: 500,
         },
       },
@@ -87,7 +99,7 @@ export default function CommentsChart({ posts, comments }: { posts: Post[]; comm
 
   return (
     <div className="w-full px-4">
-      <Chart options={options} series={series} type="bar" height={480} /> {/* Increased height */}
+      <Chart options={options} series={series} type="bar" height={480} />
     </div>
   );
 }
