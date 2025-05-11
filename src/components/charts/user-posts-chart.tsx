@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Post } from "@/types";
-import { ApexOptions } from "apexcharts"; // <--- Import ApexOptions!!
+import { ApexOptions } from "apexcharts";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -18,9 +18,34 @@ export default function UserPostsChart({ posts, userId }: UserPostsChartProps) {
     series: { name: string; data: number[] }[];
   }>({
     options: {
-      chart: { id: "user-posts", type: "bar" }, // <--- Type-safe "bar"
-      xaxis: { categories: [] },
-      colors: ["#34D399"],
+      chart: {
+        id: "user-posts",
+        type: "bar",
+        toolbar: { show: false },
+      },
+      xaxis: {
+        categories: [],
+        labels: {
+          style: {
+            fontSize: "12px",
+          },
+        },
+      },
+      yaxis: {
+        title: {
+          text: "Post Count",
+        },
+      },
+      colors: ["#3b82f6"],
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          columnWidth: "40%",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
     },
     series: [
       {
@@ -31,37 +56,23 @@ export default function UserPostsChart({ posts, userId }: UserPostsChartProps) {
   });
 
   useEffect(() => {
-    if (posts.length > 0) {
-      const userPosts = posts.filter((post) => post.userId === userId);
+    const userPosts = posts.filter((post) => post.userId === userId);
+    const categories = userPosts.map((post) => `Post ${post.id}`);
+    const data = userPosts.map(() => 1); // each post is 1
 
-      setChartData((prev) => ({
-        ...prev,
-        options: {
-          ...prev.options,
-          xaxis: {
-            categories: userPosts.map((post) => `Post ${post.id}`),
-          },
-        },
-        series: [
-          {
-            name: "Posts",
-            data: userPosts.map(() => 1), // 1 post = 1 bar
-          },
-        ],
-      }));
-    }
+    setChartData((prev) => ({
+      ...prev,
+      options: {
+        ...prev.options,
+        xaxis: { ...prev.options.xaxis, categories },
+      },
+      series: [{ name: "Posts", data }],
+    }));
   }, [posts, userId]);
 
   return (
-    <div className="h-80">
-      {typeof window !== "undefined" && (
-        <ReactApexChart
-          options={chartData.options}
-          series={chartData.series}
-          type="bar"
-          height="100%"
-        />
-      )}
+    <div className="w-full h-80">
+      <ReactApexChart options={chartData.options} series={chartData.series} type="bar" height="100%" />
     </div>
   );
 }
