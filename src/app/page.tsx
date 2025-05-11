@@ -5,6 +5,8 @@ import { getPosts, getComments, getUsers } from "@/lib/api";
 import Navbar from "@/components/layout/navbar";
 import OverviewChart from "@/components/charts/overview-chart";
 import CommentsChart from "@/components/charts/comments-chart";
+import PostsLineChart from "@/components/charts/posts-line-chart";
+import CommentsPieChart from "@/components/charts/comments-pie-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Post, Comment, User } from "@/types";
 
@@ -68,6 +70,22 @@ export default function DashboardPage() {
                   <p className="text-2xl font-bold">{users.length}</p>
                   <p className="text-gray-600">Registered users</p>
                 </CardContent>
+
+                <CardHeader>
+    <CardTitle>Posts Timeline</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <PostsLineChart posts={posts} />
+  </CardContent>
+</Card>
+
+<Card>
+  <CardHeader>
+    <CardTitle>Comment Distribution</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <CommentsPieChart posts={posts} comments={comments} />
+  </CardContent>
               </Card>
             </div>
           )}

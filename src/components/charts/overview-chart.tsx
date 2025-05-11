@@ -1,78 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { Post } from "@/types";
-import { ApexOptions } from "apexcharts"; // <-- IMPORT ApexOptions!!
 
-const ReactApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
+export default function OverviewChart({ posts }: { posts: Post[] }) {
+  const postCounts = posts.reduce<Record<number, number>>((acc, post) => {
+    acc[post.userId] = (acc[post.userId] || 0) + 1;
+    return acc;
+  }, {});
 
-interface OverviewChartProps {
-  posts: Post[];
-}
-
-export default function OverviewChart({ posts }: OverviewChartProps) {
-  const [chartData, setChartData] = useState<{
-    options: ApexOptions;
-    series: { name: string; data: number[] }[];
-  }>({
-    options: {
-      chart: { id: "overview", type: "bar" }, // ← now safe!
-      xaxis: { categories: [] },
-      colors: ["#6366F1"],
-    },
-    series: [
-      {
-        name: "Posts",
-        data: [],
-      },
-    ],
-  });
-
-  useEffect(() => {
-    if (posts.length > 0) {
-      const postsPerUser: Record<number, number> = {};
-
-      posts.forEach((post) => {
-        postsPerUser[post.userId] = (postsPerUser[post.userId] || 0) + 1;
-      });
-
-      const topUsers = Object.entries(postsPerUser)
-        .sort(([, a], [, b]) => b - a)
-        .slice(0, 5)
-        .map(([userId, postCount]) => ({
-          userId,
-          postCount,
-        }));
-
-      setChartData((prev) => ({
-        ...prev,
-        options: {
-          ...prev.options,
-          xaxis: {
-            categories: topUsers.map((user) => `User ${user.userId}`),
-          },
-        },
-        series: [
-          {
-            name: "Posts",
-            data: topUsers.map((user) => user.postCount),
-          },
-        ],
-      }));
-    }
-  }, [posts]);
+  const data = Object.entries(postCounts).map(([userId, count]) => ({
+    userId,
+    count,
+  }));
 
   return (
-    <div className="h-80">
-      {typeof window !== "undefined" && (
-        <ReactApexChart
-          options={chartData.options}
-          series={chartData.series}
-          type="bar"
-          height="100%"
-        />
-      )}
-    </div>
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={data}>
+        <XAxis dataKey="userId" label={{ value: "User ID", position: "insideBottom", offset: -5 }} />
+        <YAxis allowDecimals={false} />
+        <Tooltip />
+        <Bar dataKey="count" fill="#3b82f6" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
